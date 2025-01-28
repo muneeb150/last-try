@@ -3,167 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Thumbnail Downloader</title>
+    <title>Utility Tools</title>
     <style>
+        /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #1a1a2e;
             color: #fff;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        .container {
-            text-align: center;
-            background: #0f3460;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
-            width: 90%;
         }
         h1 {
-            font-size: 24px;
+            font-size: 28px;
             color: #e94560;
             margin-bottom: 20px;
         }
-        input {
-            padding: 10px;
-            width: 80%;
-            max-width: 400px;
-            border: 1px solid #e94560;
+        h2 {
+            font-size: 24px;
+            color: #f39c12;
+            margin-bottom: 15px;
+        }
+        .container {
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+        .tool {
+            background: #0f3460;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0f3460;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #e94560;
             border-radius: 5px;
-            margin-bottom: 10px;
+        }
+        .navbar .nav-item {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Inputs and Buttons */
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #e94560;
             outline: none;
         }
-        input:focus {
-            border-color: #f39c12;
+        input {
+            width: calc(100% - 22px);
         }
         button {
-            padding: 10px 20px;
             background-color: #e94560;
             color: #fff;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            margin: 10px 5px;
             transition: background-color 0.3s;
         }
         button:hover {
             background-color: #f39c12;
         }
-        #thumbnail {
-            margin-top: 20px;
-            display: none;
-            max-width: 100%;
-            height: auto;
-            border: 3px solid #e94560;
-            border-radius: 8px;
-        }
         .error {
             color: #ff6b6b;
-            margin-top: 10px;
         }
-        .btn-group {
-            margin-top: 15px;
-        }
-        .btn-group button {
-            display: inline-block;
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>YouTube Thumbnail Downloader</h1>
-        <p>Paste your YouTube video URL below and choose the thumbnail size:</p>
-        <input type="text" id="videoURL" placeholder="Paste YouTube URL here">
-        <button onclick="getThumbnails()">Get Thumbnails</button>
-        <div id="error" class="error"></div>
-        <img id="thumbnail" alt="Video Thumbnail">
-        <div class="btn-group" style="display:none;">
-            <button id="downloadFullHD" onclick="downloadThumbnail('full')">Download Full HD</button>
-            <button id="downloadMedium" onclick="downloadThumbnail('medium')">Download Medium</button>
-            <button id="downloadSmall" onclick="downloadThumbnail('small')">Download Small</button>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="brand">
+            <a href="#home">Home</a>
+        </div>
+        <div class="nav-item">
+            <a href="#tools">Tools</a>
+        </div>
+    </div>
+
+    <!-- Home Section -->
+    <div id="home" class="container">
+        <h1>Welcome to Utility Tools</h1>
+        <p>Explore the tools below for various utilities such as YouTube Thumbnail Downloader, MP4 to MP3 Converter, and more.</p>
+    </div>
+
+    <!-- Tools Section -->
+    <div id="tools" class="container">
+        <h1>Tools</h1>
+
+        <!-- YouTube Thumbnail Downloader -->
+        <div class="tool">
+            <h2>YouTube Thumbnail Downloader</h2>
+            <input type="text" id="videoURL" placeholder="Paste YouTube URL here">
+            <button onclick="getThumbnails()">Get Thumbnails</button>
+            <div id="error" class="error"></div>
+            <img id="thumbnail" alt="Video Thumbnail" style="display:none; max-width:100%; border:3px solid #e94560; border-radius:8px;">
+            <div class="btn-group" style="display:none;">
+                <button id="downloadFullHD" onclick="downloadThumbnail('full')">Download Full HD</button>
+                <button id="downloadMedium" onclick="downloadThumbnail('medium')">Download Medium</button>
+                <button id="downloadSmall" onclick="downloadThumbnail('small')">Download Small</button>
+            </div>
+        </div>
+
+        <!-- MP4 to MP3 Converter -->
+        <div class="tool">
+            <h2>MP4 to MP3 Converter</h2>
+            <input type="file" id="mp4Input" accept="video/mp4">
+            <button onclick="convertToMP3()">Convert to MP3</button>
+            <div id="mp4Error" class="error"></div>
+        </div>
+
+        <!-- MP3 to MP4 Converter -->
+        <div class="tool">
+            <h2>MP3 to MP4 Converter</h2>
+            <input type="file" id="mp3Input" accept="audio/mp3">
+            <button onclick="convertToMP4()">Convert to MP4</button>
+            <div id="mp3Error" class="error"></div>
         </div>
     </div>
 
     <script>
+        // YouTube Thumbnail Downloader Logic
         function getThumbnails() {
-            var url = document.getElementById('videoURL').value;
-            var errorDiv = document.getElementById('error');
-            var thumbnailImg = document.getElementById('thumbnail');
-            var btnGroup = document.querySelector('.btn-group');
+            const url = document.getElementById('videoURL').value;
+            const errorDiv = document.getElementById('error');
+            const thumbnailImg = document.getElementById('thumbnail');
+            const btnGroup = document.querySelector('.btn-group');
             
-            // Clear previous errors and images
             errorDiv.textContent = '';
             thumbnailImg.style.display = 'none';
             btnGroup.style.display = 'none';
-            
-            // Check if URL is valid YouTube video URL
-            var regex = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*\?v=|\S+?\/\S+?)|youtu\.be\/\S+)/;
-            if (!url.match(regex)) {
-                errorDiv.textContent = 'Please enter a valid YouTube video URL';
+
+            const videoIDPattern = /(?:youtube\.com(?:\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|(?:\S*\?v=|(?:embed\/)|\S+))|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const matches = url.match(videoIDPattern);
+
+            if (!matches || !matches[1]) {
+                errorDiv.textContent = 'Please enter a valid YouTube video URL.';
                 return;
             }
 
-            // Extract video ID from various URL formats
-            var videoID = '';
-            var videoIDPattern = /(?:youtube\.com(?:\/[^\/\n\s]+\/\S+\/|\/(?:v|e(?:mbed)?)\/|\/(?:\S*\?v=|(?:embed\/)|\S+?)|youtu\.be\/)([a-zA-Z0-9_-]{11}))/;
+            const videoID = matches[1];
+            const fullHDURL = `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
+            const mediumURL = `https://img.youtube.com/vi/${videoID}/mqdefault.jpg`;
+            const smallURL = `https://img.youtube.com/vi/${videoID}/default.jpg`;
 
-            // Match and extract video ID
-            var matches = url.match(videoIDPattern);
-            if (matches && matches[1]) {
-                videoID = matches[1];
-            }
-
-            // If video ID is empty or not found
-            if (!videoID) {
-                errorDiv.textContent = 'Unable to extract video ID from URL';
-                return;
-            }
-
-            // Generate thumbnail URLs
-            var fullHDURL = `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
-            var mediumURL = `https://img.youtube.com/vi/${videoID}/mqdefault.jpg`;
-            var smallURL = `https://img.youtube.com/vi/${videoID}/default.jpg`;
-
-            // Display full HD thumbnail for preview
             thumbnailImg.src = fullHDURL;
             thumbnailImg.style.display = 'block';
-
-            // Show download buttons
             btnGroup.style.display = 'block';
 
-            // Save URLs in buttons' data attributes
             document.getElementById('downloadFullHD').setAttribute('data-url', fullHDURL);
             document.getElementById('downloadMedium').setAttribute('data-url', mediumURL);
             document.getElementById('downloadSmall').setAttribute('data-url', smallURL);
         }
 
         function downloadThumbnail(size) {
-            var buttonID = '';
-            if (size === 'full') {
-                buttonID = 'downloadFullHD';
-            } else if (size === 'medium') {
-                buttonID = 'downloadMedium';
-            } else if (size === 'small') {
-                buttonID = 'downloadSmall';
-            }
+            const btnID = size === 'full' ? 'downloadFullHD' : size === 'medium' ? 'downloadMedium' : 'downloadSmall';
+            const button = document.getElementById(btnID);
+            const url = button.getAttribute('data-url');
 
-            var button = document.getElementById(buttonID);
-            var thumbnailURL = button.getAttribute('data-url');
-            
-            // Create a temporary anchor element to trigger the download
-            var a = document.createElement('a');
-            a.href = thumbnailURL;
-            a.download = `thumbnail_${size}.jpg`; // Set file name dynamically
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = `thumbnail_${size}.jpg`;
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+
+        // MP4 to MP3 Conversion Logic (Placeholder)
+        function convertToMP3() {
+            alert("MP4 to MP3 Conversion coming soon!");
+        }
+
+        // MP3 to MP4 Conversion Logic (Placeholder)
+        function convertToMP4() {
+            alert("MP3 to MP4 Conversion coming soon!");
         }
     </script>
 </body>
