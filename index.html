@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Thumbnail Downloader</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: #0f3460;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 {
+            font-size: 24px;
+            color: #e94560;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #e94560;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #f39c12;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #e94560;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #f39c12;
+        }
+        #thumbnail {
+            margin-top: 20px;
+            display: none;
+            max-width: 100%;
+            height: auto;
+            border: 3px solid #e94560;
+            border-radius: 8px;
+        }
+        .error {
+            color: #ff6b6b;
+            margin-top: 10px;
+        }
+        .btn-group {
+            margin-top: 15px;
+        }
+        .btn-group button {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Thumbnail Downloader</h1>
+        <p>Paste your YouTube video URL below and choose the thumbnail size:</p>
+        <input type="text" id="videoURL" placeholder="Paste YouTube URL here">
+        <button onclick="getThumbnails()">Get Thumbnails</button>
+        <div id="error" class="error"></div>
+        <img id="thumbnail" alt="Video Thumbnail">
+        <div class="btn-group" style="display:none;">
+            <button id="downloadFullHD" onclick="downloadThumbnail('full')">Download Full HD</button>
+            <button id="downloadMedium" onclick="downloadThumbnail('medium')">Download Medium</button>
+            <button id="downloadSmall" onclick="downloadThumbnail('small')">Download Small</button>
+        </div>
+    </div>
+
+    <script>
+        function getThumbnails() {
+            var url = document.getElementById('videoURL').value;
+            var errorDiv = document.getElementById('error');
+            var thumbnailImg = document.getElementById('thumbnail');
+            var btnGroup = document.querySelector('.btn-group');
+            
+            // Clear previous errors and images
+            errorDiv.textContent = '';
+            thumbnailImg.style.display = 'none';
+            btnGroup.style.display = 'none';
+            
+            // Check if URL is valid YouTube video URL
+            var regex = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*\?v=|\S+?\/\S+?)|youtu\.be\/\S+)/;
+            if (!url.match(regex)) {
+                errorDiv.textContent = 'Please enter a valid YouTube video URL';
+                return;
+            }
+
+            // Extract video ID from various URL formats
+            var videoID = '';
+            var videoIDPattern = /(?:youtube\.com(?:\/[^\/\n\s]+\/\S+\/|\/(?:v|e(?:mbed)?)\/|\/(?:\S*\?v=|(?:embed\/)|\S+?)|youtu\.be\/)([a-zA-Z0-9_-]{11}))/;
+
+            // Match and extract video ID
+            var matches = url.match(videoIDPattern);
+            if (matches && matches[1]) {
+                videoID = matches[1];
+            }
+
+            // If video ID is empty or not found
+            if (!videoID) {
+                errorDiv.textContent = 'Unable to extract video ID from URL';
+                return;
+            }
+
+            // Generate thumbnail URLs
+            var fullHDURL = `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
+            var mediumURL = `https://img.youtube.com/vi/${videoID}/mqdefault.jpg`;
+            var smallURL = `https://img.youtube.com/vi/${videoID}/default.jpg`;
+
+            // Display full HD thumbnail for preview
+            thumbnailImg.src = fullHDURL;
+            thumbnailImg.style.display = 'block';
+
+            // Show download buttons
+            btnGroup.style.display = 'block';
+
+            // Save URLs in buttons' data attributes
+            document.getElementById('downloadFullHD').setAttribute('data-url', fullHDURL);
+            document.getElementById('downloadMedium').setAttribute('data-url', mediumURL);
+            document.getElementById('downloadSmall').setAttribute('data-url', smallURL);
+        }
+
+        function downloadThumbnail(size) {
+            var buttonID = '';
+            if (size === 'full') {
+                buttonID = 'downloadFullHD';
+            } else if (size === 'medium') {
+                buttonID = 'downloadMedium';
+            } else if (size === 'small') {
+                buttonID = 'downloadSmall';
+            }
+
+            var button = document.getElementById(buttonID);
+            var thumbnailURL = button.getAttribute('data-url');
+            
+            // Create a temporary anchor element to trigger the download
+            var a = document.createElement('a');
+            a.href = thumbnailURL;
+            a.download = `thumbnail_${size}.jpg`; // Set file name dynamically
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
